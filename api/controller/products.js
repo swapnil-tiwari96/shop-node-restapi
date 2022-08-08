@@ -20,7 +20,7 @@ exports.createProduct = (req, res) =>
         .catch(error => res.status(500).send(error));
 }
 
-exports.getOne = (req, res) =>
+exports.updateOne = (req, res) =>
 {
     const id = req.params.productID;
     const updateOps = {};
