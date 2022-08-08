@@ -1,37 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const Order = require('../models/order');
 
+const checkAuth = require('../middleware/checkAuth');
+const OrdersController = require('../controller/orders');
 
-router.get('/', (req, res) =>
-{
-    Order.find()
-        .populate('product')
-        .then(result => res.send(result))
-        .catch(err => res.send(err))
-})
+router.get('/', checkAuth, OrdersController.getAll);
 
-router.post('/', (req, res) =>
-{
-    const order = new Order({
-        product: req.body.productID,
-        quantity: req.body.quantity
-    })
-    order.save()
-        .then(result => res.send(result))
-        .catch(err => res.send(err))
-})
+router.post('/', checkAuth, OrdersController.createOrder);
 
-router.get('/:orderID', (req, res) =>
-{
-    const id = req.params.orderID;
-    res.status(200).send(id);
-})
+router.get('/:orderID', checkAuth, OrdersController.getOne);
 
-router.delete('/:orderID', (req, res) =>
-{
-    const id = req.params.orderID;
-    res.status(200).send(id);
-})
+router.delete('/:orderID', checkAuth, OrdersController.deleteOne)
 
 module.exports = router;
